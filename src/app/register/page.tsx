@@ -308,12 +308,12 @@ function CountryDropdown({
 
   return (
     <div className="relative" ref={dropdownRef}>
-      <label className="block text-[19px] text-gray-600 mb-1.5 uppercase tracking-wide">{label.replace(' *', '')}</label>
+      <label className="block text-xs font-medium text-gray-600 mb-1.5 uppercase tracking-wide">{label.replace(' *', '')}</label>
       <div className="relative">
         <button
           type="button"
           onClick={() => setIsOpen(!isOpen)}
-          className={`w-full rounded-md border px-4 py-2.5 text-[19px] text-left transition-all duration-200 focus:outline-none focus:ring-1 pr-10 ${
+          className={`w-full rounded-md border px-4 py-2.5 text-sm text-left transition-all duration-200 focus:outline-none focus:ring-1 pr-10 ${
             error || apiErrors.length > 0
               ? 'border-red-300 focus:border-red-500 focus:ring-red-500'
               : 'border-gray-200 focus:border-[#ce7a55] focus:ring-[#ce7a55]'
@@ -343,7 +343,7 @@ function CountryDropdown({
               placeholder="Search country..."
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
-              className="w-full rounded-md border border-gray-200 px-3 py-2 text-[19px] focus:outline-none focus:ring-1 focus:border-[#ce7a55] focus:ring-[#ce7a55] transition-all duration-200"
+              className="w-full rounded-md border border-gray-200 px-3 py-2 text-xs focus:outline-none focus:ring-1 focus:border-[#ce7a55] focus:ring-[#ce7a55] transition-all duration-200"
               onClick={(e) => e.stopPropagation()}
             />
           </div>
@@ -358,8 +358,8 @@ function CountryDropdown({
                     setIsOpen(false);
                     setSearchTerm('');
                   }}
-                  className={`w-full px-4 py-2.5 text-left text-[19px] transition-colors duration-150 ${
-                    value === country.code ? '' : ''
+                  className={`w-full px-4 py-2.5 text-left text-xs transition-colors duration-150 ${
+                    value === country.code ? 'font-medium' : ''
                   }`}
                   style={value === country.code ? { backgroundColor: '#f5e8e0', color: '#ce7a55' } : { color: '#374151' }}
                   onMouseEnter={(e) => {
@@ -373,7 +373,7 @@ function CountryDropdown({
                     }
                   }}
                 >
-                  <span>{country.code}</span> - {country.name}
+                  <span className="font-medium">{country.code}</span> - {country.name}
                 </button>
               ))
             ) : (
@@ -618,7 +618,7 @@ export default function RegisterPage() {
           <div className="flex items-center justify-center gap-3">
             <div className="flex items-center gap-2">
               <div
-                className={`flex h-8 w-8 items-center justify-center rounded-full text-[19px] transition-all duration-300 ${
+                className={`flex h-8 w-8 items-center justify-center rounded-full text-sm font-medium transition-all duration-300 ${
                   step >= 1 ? 'text-white scale-110' : 'bg-gray-100 text-gray-400'
                 }`}
                 style={step >= 1 ? { backgroundColor: '#ce7a55' } : {}}
@@ -626,7 +626,7 @@ export default function RegisterPage() {
                 1
               </div>
               {step >= 1 && (
-                <span className="text-[19px] text-gray-700 transition-opacity duration-300" style={{ color: '#ce7a55' }}>
+                <span className="text-sm font-medium text-gray-700 transition-opacity duration-300" style={{ color: '#ce7a55' }}>
                   Personal Info
                 </span>
               )}
@@ -639,7 +639,7 @@ export default function RegisterPage() {
             </div>
             <div className="flex items-center gap-2">
               <div
-                className={`flex h-8 w-8 items-center justify-center rounded-full text-[19px] transition-all duration-300 ${
+                className={`flex h-8 w-8 items-center justify-center rounded-full text-sm font-medium transition-all duration-300 ${
                   step >= 2 ? 'text-white scale-110' : 'bg-gray-100 text-gray-400'
                 }`}
                 style={step >= 2 ? { backgroundColor: '#ce7a55' } : {}}
@@ -647,7 +647,7 @@ export default function RegisterPage() {
                 2
               </div>
               {step >= 2 && (
-                <span className="text-[19px] text-gray-700 transition-opacity duration-300" style={{ color: '#ce7a55' }}>
+                <span className="text-sm font-medium text-gray-700 transition-opacity duration-300" style={{ color: '#ce7a55' }}>
                   Additional Details
                 </span>
               )}
@@ -698,7 +698,7 @@ export default function RegisterPage() {
                   </svg>
                 </div>
 
-                <h3 className="mb-1 text-[19px] text-gray-900">
+                <h3 className="mb-1 text-lg font-semibold text-gray-900">
                   Registration Failed
                 </h3>
                 <p className="mb-4 text-center text-xs text-gray-500">
@@ -735,7 +735,7 @@ export default function RegisterPage() {
               <div className="border-t border-gray-100 px-6 py-4">
                 <button
                   onClick={() => setShowErrorPopup(false)}
-                  className="w-full rounded-md px-4 py-2.5 text-[19px] text-white shadow-sm transition-all duration-200 hover:shadow-md focus:outline-none focus:ring-2 focus:ring-offset-2"
+                  className="w-full rounded-md px-4 py-2.5 text-sm font-medium text-white shadow-sm transition-all duration-200 hover:shadow-md focus:outline-none focus:ring-2 focus:ring-offset-2"
                   style={{ backgroundColor: '#ce7a55', '--tw-ring-color': '#ce7a55' } as React.CSSProperties}
                   onMouseEnter={(e) => e.currentTarget.style.backgroundColor = '#b86945'}
                   onMouseLeave={(e) => e.currentTarget.style.backgroundColor = '#ce7a55'}
@@ -759,13 +759,13 @@ export default function RegisterPage() {
 
             <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
               <div>
-                <label className="block text-[19px] text-gray-600 mb-1.5 uppercase tracking-wide">
+                <label className="block text-xs font-medium text-gray-600 mb-1.5 uppercase tracking-wide">
                   First Name
                 </label>
                 <input
                   {...step1Form.register('firstName')}
                   type="text"
-                  className={`w-full rounded-md border px-4 py-2.5 text-[19px] transition-all duration-200 focus:outline-none focus:ring-1 ${
+                  className={`w-full rounded-md border px-4 py-2.5 text-sm transition-all duration-200 focus:outline-none focus:ring-1 ${
                     step1Form.formState.errors.firstName || getFieldError('firstName').length > 0
                       ? 'border-red-300 focus:border-red-500 focus:ring-red-500'
                       : 'border-gray-200 focus:border-[#ce7a55] focus:ring-[#ce7a55]'
@@ -785,13 +785,13 @@ export default function RegisterPage() {
               </div>
 
               <div>
-                <label className="block text-[19px] text-gray-600 mb-1.5 uppercase tracking-wide">
+                <label className="block text-xs font-medium text-gray-600 mb-1.5 uppercase tracking-wide">
                   Last Name
                 </label>
                 <input
                   {...step1Form.register('lastName')}
                   type="text"
-                  className={`w-full rounded-md border px-4 py-2.5 text-[19px] transition-all duration-200 focus:outline-none focus:ring-1 ${
+                  className={`w-full rounded-md border px-4 py-2.5 text-sm transition-all duration-200 focus:outline-none focus:ring-1 ${
                     step1Form.formState.errors.lastName || getFieldError('lastName').length > 0
                       ? 'border-red-300 focus:border-red-500 focus:ring-red-500'
                       : 'border-gray-200 focus:border-[#ce7a55] focus:ring-[#ce7a55]'
@@ -812,13 +812,13 @@ export default function RegisterPage() {
             </div>
 
             <div>
-              <label className="block text-[19px] text-gray-600 mb-1.5 uppercase tracking-wide">
+              <label className="block text-xs font-medium text-gray-600 mb-1.5 uppercase tracking-wide">
                 Email Address
               </label>
               <input
                 {...step1Form.register('email')}
                 type="email"
-                className={`w-full rounded-md border px-4 py-2.5 text-[19px] transition-all duration-200 focus:outline-none focus:ring-1 ${
+                className={`w-full rounded-md border px-4 py-2.5 text-sm transition-all duration-200 focus:outline-none focus:ring-1 ${
                   step1Form.formState.errors.email || getFieldError('email').length > 0
                     ? 'border-red-300 focus:border-red-500 focus:ring-red-500'
                     : 'border-gray-200 focus:border-[#ce7a55] focus:ring-[#ce7a55]'
@@ -838,13 +838,13 @@ export default function RegisterPage() {
             </div>
 
             <div>
-              <label className="block text-[19px] text-gray-600 mb-1.5 uppercase tracking-wide">
+              <label className="block text-xs font-medium text-gray-600 mb-1.5 uppercase tracking-wide">
                 Phone Number
               </label>
               <input
                 {...step1Form.register('phone')}
                 type="tel"
-                className={`w-full rounded-md border px-4 py-2.5 text-[19px] transition-all duration-200 focus:outline-none focus:ring-1 ${
+                className={`w-full rounded-md border px-4 py-2.5 text-sm transition-all duration-200 focus:outline-none focus:ring-1 ${
                   step1Form.formState.errors.phone || getFieldError('phone').length > 0
                     ? 'border-red-300 focus:border-red-500 focus:ring-red-500'
                     : 'border-gray-200 focus:border-[#ce7a55] focus:ring-[#ce7a55]'
@@ -866,7 +866,7 @@ export default function RegisterPage() {
             <div className="mt-auto pt-4">
               <button
                 type="submit"
-                className="w-full rounded-md px-6 py-3 text-[19px] text-white shadow-sm transition-all duration-200 hover:shadow-md focus:outline-none focus:ring-2 focus:ring-offset-2"
+                className="w-full rounded-md px-6 py-3 text-sm font-medium text-white shadow-sm transition-all duration-200 hover:shadow-md focus:outline-none focus:ring-2 focus:ring-offset-2"
                 style={{ backgroundColor: '#ce7a55', '--tw-ring-color': '#ce7a55' } as React.CSSProperties}
                 onMouseEnter={(e) => e.currentTarget.style.backgroundColor = '#b86945'}
                 onMouseLeave={(e) => e.currentTarget.style.backgroundColor = '#ce7a55'}
@@ -892,13 +892,13 @@ export default function RegisterPage() {
 
             <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
               <div>
-                <label className="block text-[19px] text-gray-600 mb-1.5 uppercase tracking-wide">
+                <label className="block text-xs font-medium text-gray-600 mb-1.5 uppercase tracking-wide">
                   Password
                 </label>
                 <input
                   {...step2Form.register('password')}
                   type="password"
-                  className={`w-full rounded-md border px-4 py-2.5 text-[19px] transition-all duration-200 focus:outline-none focus:ring-1 ${
+                  className={`w-full rounded-md border px-4 py-2.5 text-sm transition-all duration-200 focus:outline-none focus:ring-1 ${
                     step2Form.formState.errors.password || getFieldError('password').length > 0
                       ? 'border-red-300 focus:border-red-500 focus:ring-red-500'
                       : 'border-gray-200 focus:border-[#ce7a55] focus:ring-[#ce7a55]'
@@ -918,13 +918,13 @@ export default function RegisterPage() {
               </div>
 
               <div>
-                <label className="block text-[19px] text-gray-600 mb-1.5 uppercase tracking-wide">
+                <label className="block text-xs font-medium text-gray-600 mb-1.5 uppercase tracking-wide">
                   Confirm Password
                 </label>
                 <input
                   {...step2Form.register('confirmPassword')}
                   type="password"
-                  className={`w-full rounded-md border px-4 py-2.5 text-[19px] transition-all duration-200 focus:outline-none focus:ring-1 ${
+                  className={`w-full rounded-md border px-4 py-2.5 text-sm transition-all duration-200 focus:outline-none focus:ring-1 ${
                     step2Form.formState.errors.confirmPassword || getFieldError('confirmPassword').length > 0
                       ? 'border-red-300 focus:border-red-500 focus:ring-red-500'
                       : 'border-gray-200 focus:border-[#ce7a55] focus:ring-[#ce7a55]'
@@ -969,7 +969,7 @@ export default function RegisterPage() {
             </div>
 
             <div>
-              <label className="block text-[19px] text-gray-600 mb-2 uppercase tracking-wide">
+              <label className="block text-xs font-medium text-gray-600 mb-2 uppercase tracking-wide">
                 Select Platform
               </label>
               <div className="grid grid-cols-2 gap-2.5">
@@ -994,10 +994,10 @@ export default function RegisterPage() {
                       }`}
                       style={step2Form.watch('tin') === '1' ? { backgroundColor: '#ce7a55' } : {}}
                     >
-                      <span className="text-[19px]">MT4</span>
+                      <span className="text-xs font-bold">MT4</span>
                     </div>
                     <span
-                      className={`text-[19px] ${
+                      className={`text-sm font-medium ${
                         step2Form.watch('tin') === '1'
                           ? ''
                           : 'text-gray-600'
@@ -1045,10 +1045,10 @@ export default function RegisterPage() {
                       }`}
                       style={step2Form.watch('tin') === '2' ? { backgroundColor: '#ce7a55' } : {}}
                     >
-                      <span className="text-[19px]">MT5</span>
+                      <span className="text-xs font-bold">MT5</span>
                     </div>
                     <span
-                      className={`text-[19px] ${
+                      className={`text-sm font-medium ${
                         step2Form.watch('tin') === '2'
                           ? ''
                           : 'text-gray-600'
@@ -1092,7 +1092,7 @@ export default function RegisterPage() {
               <button
                 type="submit"
                 disabled={isSubmitting}
-                className="w-full rounded-md px-6 py-3 text-[19px] text-white shadow-sm transition-all duration-200 hover:shadow-md focus:outline-none focus:ring-2 focus:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-60"
+                className="w-full rounded-md px-6 py-3 text-sm font-medium text-white shadow-sm transition-all duration-200 hover:shadow-md focus:outline-none focus:ring-2 focus:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-60"
                 style={{ backgroundColor: isSubmitting ? '#a0a0a0' : '#ce7a55', '--tw-ring-color': '#ce7a55' } as React.CSSProperties}
                 onMouseEnter={(e) => !e.currentTarget.disabled && (e.currentTarget.style.backgroundColor = '#b86945')}
                 onMouseLeave={(e) => !e.currentTarget.disabled && (e.currentTarget.style.backgroundColor = '#ce7a55')}
