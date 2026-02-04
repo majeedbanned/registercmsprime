@@ -17,10 +17,10 @@ export default function SuccessPage() {
             />
           </svg>
         </div>
-        <h2 className="mb-3 text-xl font-semibold text-gray-900">
+        <h2 className="mb-3 text-[19px] text-gray-900">
           Thanks for registering to CMS Prime!
         </h2>
-        <p className="text-sm text-gray-600 leading-relaxed">
+        <p className="text-[19px] text-gray-600 leading-relaxed">
           An activation link has been sent to your email. Please click on it to activate your profile.
         </p>
       </div>
