@@ -884,7 +884,7 @@ export default function RegisterPage() {
               <button
                 type="button"
                 onClick={() => setStep(1)}
-                className="text-xs font-medium text-gray-500 hover:text-gray-700 transition-colors duration-200"
+                className="text-xs mt-2 font-medium text-gray-500 hover:text-gray-700 transition-colors duration-200"
               >
                 ← Back
               </button>
