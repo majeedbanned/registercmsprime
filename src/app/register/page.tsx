@@ -313,7 +313,7 @@ function CountryDropdown({
         <button
           type="button"
           onClick={() => setIsOpen(!isOpen)}
-          className={`w-full rounded-md border px-4 py-2.5 text-sm text-left transition-all duration-200 focus:outline-none focus:ring-1 pr-10 ${
+          className={`w-full rounded-md border px-4 py-2.5 text-sm text-left bg-white transition-all duration-200 focus:outline-none focus:ring-1 pr-10 ${
             error || apiErrors.length > 0
               ? 'border-red-300 focus:border-red-500 focus:ring-red-500'
               : 'border-gray-200 focus:border-[#ce7a55] focus:ring-[#ce7a55]'
@@ -343,7 +343,7 @@ function CountryDropdown({
               placeholder="Search country..."
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
-              className="w-full rounded-md border border-gray-200 px-3 py-2 text-xs focus:outline-none focus:ring-1 focus:border-[#ce7a55] focus:ring-[#ce7a55] transition-all duration-200"
+              className="w-full rounded-md border border-gray-200 px-3 py-2 text-xs bg-white focus:outline-none focus:ring-1 focus:border-[#ce7a55] focus:ring-[#ce7a55] transition-all duration-200"
               onClick={(e) => e.stopPropagation()}
             />
           </div>
@@ -765,7 +765,7 @@ export default function RegisterPage() {
                 <input
                   {...step1Form.register('firstName')}
                   type="text"
-                  className={`w-full rounded-md border px-4 py-2.5 text-sm transition-all duration-200 focus:outline-none focus:ring-1 ${
+                  className={`w-full rounded-md border px-4 py-2.5 text-sm bg-white transition-all duration-200 focus:outline-none focus:ring-1 ${
                     step1Form.formState.errors.firstName || getFieldError('firstName').length > 0
                       ? 'border-red-300 focus:border-red-500 focus:ring-red-500'
                       : 'border-gray-200 focus:border-[#ce7a55] focus:ring-[#ce7a55]'
@@ -791,7 +791,7 @@ export default function RegisterPage() {
                 <input
                   {...step1Form.register('lastName')}
                   type="text"
-                  className={`w-full rounded-md border px-4 py-2.5 text-sm transition-all duration-200 focus:outline-none focus:ring-1 ${
+                  className={`w-full rounded-md border px-4 py-2.5 text-sm bg-white transition-all duration-200 focus:outline-none focus:ring-1 ${
                     step1Form.formState.errors.lastName || getFieldError('lastName').length > 0
                       ? 'border-red-300 focus:border-red-500 focus:ring-red-500'
                       : 'border-gray-200 focus:border-[#ce7a55] focus:ring-[#ce7a55]'
@@ -818,7 +818,7 @@ export default function RegisterPage() {
               <input
                 {...step1Form.register('email')}
                 type="email"
-                className={`w-full rounded-md border px-4 py-2.5 text-sm transition-all duration-200 focus:outline-none focus:ring-1 ${
+                className={`w-full rounded-md border px-4 py-2.5 text-sm bg-white transition-all duration-200 focus:outline-none focus:ring-1 ${
                   step1Form.formState.errors.email || getFieldError('email').length > 0
                     ? 'border-red-300 focus:border-red-500 focus:ring-red-500'
                     : 'border-gray-200 focus:border-[#ce7a55] focus:ring-[#ce7a55]'
@@ -844,7 +844,7 @@ export default function RegisterPage() {
               <input
                 {...step1Form.register('phone')}
                 type="tel"
-                className={`w-full rounded-md border px-4 py-2.5 text-sm transition-all duration-200 focus:outline-none focus:ring-1 ${
+                className={`w-full rounded-md border px-4 py-2.5 text-sm bg-white transition-all duration-200 focus:outline-none focus:ring-1 ${
                   step1Form.formState.errors.phone || getFieldError('phone').length > 0
                     ? 'border-red-300 focus:border-red-500 focus:ring-red-500'
                     : 'border-gray-200 focus:border-[#ce7a55] focus:ring-[#ce7a55]'
@@ -898,7 +898,7 @@ export default function RegisterPage() {
                 <input
                   {...step2Form.register('password')}
                   type="password"
-                  className={`w-full rounded-md border px-4 py-2.5 text-sm transition-all duration-200 focus:outline-none focus:ring-1 ${
+                  className={`w-full rounded-md border px-4 py-2.5 text-sm bg-white transition-all duration-200 focus:outline-none focus:ring-1 ${
                     step2Form.formState.errors.password || getFieldError('password').length > 0
                       ? 'border-red-300 focus:border-red-500 focus:ring-red-500'
                       : 'border-gray-200 focus:border-[#ce7a55] focus:ring-[#ce7a55]'
@@ -924,7 +924,7 @@ export default function RegisterPage() {
                 <input
                   {...step2Form.register('confirmPassword')}
                   type="password"
-                  className={`w-full rounded-md border px-4 py-2.5 text-sm transition-all duration-200 focus:outline-none focus:ring-1 ${
+                  className={`w-full rounded-md border px-4 py-2.5 text-sm bg-white transition-all duration-200 focus:outline-none focus:ring-1 ${
                     step2Form.formState.errors.confirmPassword || getFieldError('confirmPassword').length > 0
                       ? 'border-red-300 focus:border-red-500 focus:ring-red-500'
                       : 'border-gray-200 focus:border-[#ce7a55] focus:ring-[#ce7a55]'
