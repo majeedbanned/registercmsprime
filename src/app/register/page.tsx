@@ -1,262 +1,11 @@
 'use client';
 
 import { useState, useRef, useEffect } from 'react';
-import { useForm } from 'react-hook-form';
+import { useForm, useWatch } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
 import { useRouter } from 'next/navigation';
-
-// Countries data
-const countries = [
-  { code: 'AF', name: 'Afghanistan' },
-  { code: 'AX', name: 'Aland Islands' },
-  { code: 'AL', name: 'Albania' },
-  { code: 'DZ', name: 'Algeria' },
-  { code: 'AS', name: 'American Samoa' },
-  { code: 'AD', name: 'Andorra' },
-  { code: 'AO', name: 'Angola' },
-  { code: 'AI', name: 'Anguilla' },
-  { code: 'AQ', name: 'Antarctica' },
-  { code: 'AG', name: 'Antigua Barbuda' },
-  { code: 'AR', name: 'Argentina' },
-  { code: 'AM', name: 'Armenia' },
-  { code: 'AW', name: 'Aruba' },
-  { code: 'AU', name: 'Australia' },
-  { code: 'AT', name: 'Austria' },
-  { code: 'AZ', name: 'Azerbaijan' },
-  { code: 'BS', name: 'Bahamas' },
-  { code: 'BH', name: 'Bahrain' },
-  { code: 'BD', name: 'Bangladesh' },
-  { code: 'BB', name: 'Barbados' },
-  { code: 'BY', name: 'Belarus' },
-  { code: 'BE', name: 'Belgium' },
-  { code: 'BZ', name: 'Belize' },
-  { code: 'BJ', name: 'Benin' },
-  { code: 'BM', name: 'Bermuda' },
-  { code: 'BT', name: 'Bhutan' },
-  { code: 'BO', name: 'Bolivia' },
-  { code: 'BA', name: 'Bosnia Herzegovina' },
-  { code: 'BW', name: 'Botswana' },
-  { code: 'BV', name: 'Bouvet Island' },
-  { code: 'BR', name: 'Brazil' },
-  { code: 'IO', name: 'British Indian Ocean Territory' },
-  { code: 'VG', name: 'British Virgin Islands' },
-  { code: 'BN', name: 'Brunei' },
-  { code: 'BG', name: 'Bulgaria' },
-  { code: 'BF', name: 'Burkina Faso' },
-  { code: 'BI', name: 'Burundi' },
-  { code: 'KH', name: 'Cambodia' },
-  { code: 'CM', name: 'Cameroon' },
-  { code: 'CA', name: 'Canada' },
-  { code: 'CV', name: 'Cape Verde' },
-  { code: 'BQ', name: 'Caribbean Netherlands' },
-  { code: 'KY', name: 'Cayman Islands' },
-  { code: 'CF', name: 'Central African Republic' },
-  { code: 'TD', name: 'Chad' },
-  { code: 'CL', name: 'Chile' },
-  { code: 'CN', name: 'China' },
-  { code: 'CX', name: 'Christmas Island' },
-  { code: 'CC', name: 'Cocos Keeling Islands' },
-  { code: 'CO', name: 'Colombia' },
-  { code: 'KM', name: 'Comoros' },
-  { code: 'CG', name: 'Congo Brazzaville' },
-  { code: 'CD', name: 'Congo Kinshasa' },
-  { code: 'CK', name: 'Cook Islands' },
-  { code: 'CR', name: 'Costa Rica' },
-  { code: 'CI', name: 'Cote d Ivoire' },
-  { code: 'HR', name: 'Croatia' },
-  { code: 'CU', name: 'Cuba' },
-  { code: 'CW', name: 'Curacao' },
-  { code: 'CY', name: 'Cyprus' },
-  { code: 'CZ', name: 'Czech Republic' },
-  { code: 'DK', name: 'Denmark' },
-  { code: 'DJ', name: 'Djibouti' },
-  { code: 'DM', name: 'Dominica' },
-  { code: 'DO', name: 'Dominican Republic' },
-  { code: 'EC', name: 'Ecuador' },
-  { code: 'EG', name: 'Egypt' },
-  { code: 'SV', name: 'El Salvador' },
-  { code: 'GQ', name: 'Equatorial Guinea' },
-  { code: 'ER', name: 'Eritrea' },
-  { code: 'EE', name: 'Estonia' },
-  { code: 'SZ', name: 'Eswatini' },
-  { code: 'ET', name: 'Ethiopia' },
-  { code: 'FK', name: 'Falkland Islands' },
-  { code: 'FO', name: 'Faroe Islands' },
-  { code: 'FJ', name: 'Fiji' },
-  { code: 'FI', name: 'Finland' },
-  { code: 'FR', name: 'France' },
-  { code: 'GF', name: 'French Guiana' },
-  { code: 'PF', name: 'French Polynesia' },
-  { code: 'TF', name: 'French Southern Territories' },
-  { code: 'GA', name: 'Gabon' },
-  { code: 'GM', name: 'Gambia' },
-  { code: 'GE', name: 'Georgia' },
-  { code: 'DE', name: 'Germany' },
-  { code: 'GH', name: 'Ghana' },
-  { code: 'GI', name: 'Gibraltar' },
-  { code: 'GR', name: 'Greece' },
-  { code: 'GL', name: 'Greenland' },
-  { code: 'GD', name: 'Grenada' },
-  { code: 'GP', name: 'Guadeloupe' },
-  { code: 'GU', name: 'Guam' },
-  { code: 'GT', name: 'Guatemala' },
-  { code: 'GG', name: 'Guernsey' },
-  { code: 'GN', name: 'Guinea' },
-  { code: 'GW', name: 'Guinea Bissau' },
-  { code: 'GY', name: 'Guyana' },
-  { code: 'HT', name: 'Haiti' },
-  { code: 'HM', name: 'Heard McDonald Islands' },
-  { code: 'HN', name: 'Honduras' },
-  { code: 'HK', name: 'Hong Kong SAR China' },
-  { code: 'HU', name: 'Hungary' },
-  { code: 'IS', name: 'Iceland' },
-  { code: 'IN', name: 'India' },
-  { code: 'ID', name: 'Indonesia' },
-  { code: 'IR', name: 'Iran' },
-  { code: 'IQ', name: 'Iraq' },
-  { code: 'IE', name: 'Ireland' },
-  { code: 'IM', name: 'Isle of Man' },
-  { code: 'IL', name: 'Israel' },
-  { code: 'IT', name: 'Italy' },
-  { code: 'JM', name: 'Jamaica' },
-  { code: 'JP', name: 'Japan' },
-  { code: 'JE', name: 'Jersey' },
-  { code: 'JO', name: 'Jordan' },
-  { code: 'KZ', name: 'Kazakhstan' },
-  { code: 'KE', name: 'Kenya' },
-  { code: 'KI', name: 'Kiribati' },
-  { code: 'KW', name: 'Kuwait' },
-  { code: 'KG', name: 'Kyrgyzstan' },
-  { code: 'LA', name: 'Laos' },
-  { code: 'LV', name: 'Latvia' },
-  { code: 'LB', name: 'Lebanon' },
-  { code: 'LS', name: 'Lesotho' },
-  { code: 'LR', name: 'Liberia' },
-  { code: 'LY', name: 'Libya' },
-  { code: 'LI', name: 'Liechtenstein' },
-  { code: 'LT', name: 'Lithuania' },
-  { code: 'LU', name: 'Luxembourg' },
-  { code: 'MO', name: 'Macao SAR China' },
-  { code: 'MG', name: 'Madagascar' },
-  { code: 'MW', name: 'Malawi' },
-  { code: 'MY', name: 'Malaysia' },
-  { code: 'MV', name: 'Maldives' },
-  { code: 'ML', name: 'Mali' },
-  { code: 'MT', name: 'Malta' },
-  { code: 'MH', name: 'Marshall Islands' },
-  { code: 'MQ', name: 'Martinique' },
-  { code: 'MR', name: 'Mauritania' },
-  { code: 'MU', name: 'Mauritius' },
-  { code: 'YT', name: 'Mayotte' },
-  { code: 'MX', name: 'Mexico' },
-  { code: 'FM', name: 'Micronesia' },
-  { code: 'MD', name: 'Moldova' },
-  { code: 'MC', name: 'Monaco' },
-  { code: 'MN', name: 'Mongolia' },
-  { code: 'ME', name: 'Montenegro' },
-  { code: 'MS', name: 'Montserrat' },
-  { code: 'MA', name: 'Morocco' },
-  { code: 'MZ', name: 'Mozambique' },
-  { code: 'MM', name: 'Myanmar Burma' },
-  { code: 'NA', name: 'Namibia' },
-  { code: 'NR', name: 'Nauru' },
-  { code: 'NP', name: 'Nepal' },
-  { code: 'NL', name: 'Netherlands' },
-  { code: 'NC', name: 'New Caledonia' },
-  { code: 'NZ', name: 'New Zealand' },
-  { code: 'NI', name: 'Nicaragua' },
-  { code: 'NE', name: 'Niger' },
-  { code: 'NG', name: 'Nigeria' },
-  { code: 'NU', name: 'Niue' },
-  { code: 'NF', name: 'Norfolk Island' },
-  { code: 'KP', name: 'North Korea' },
-  { code: 'MK', name: 'North Macedonia' },
-  { code: 'MP', name: 'Northern Mariana Islands' },
-  { code: 'NO', name: 'Norway' },
-  { code: 'OM', name: 'Oman' },
-  { code: 'PK', name: 'Pakistan' },
-  { code: 'PW', name: 'Palau' },
-  { code: 'PS', name: 'Palestinian Territories' },
-  { code: 'PA', name: 'Panama' },
-  { code: 'PG', name: 'Papua New Guinea' },
-  { code: 'PY', name: 'Paraguay' },
-  { code: 'PE', name: 'Peru' },
-  { code: 'PH', name: 'Philippines' },
-  { code: 'PN', name: 'Pitcairn Islands' },
-  { code: 'PL', name: 'Poland' },
-  { code: 'PT', name: 'Portugal' },
-  { code: 'PR', name: 'Puerto Rico' },
-  { code: 'QA', name: 'Qatar' },
-  { code: 'RE', name: 'Reunion' },
-  { code: 'RO', name: 'Romania' },
-  { code: 'RU', name: 'Russia' },
-  { code: 'RW', name: 'Rwanda' },
-  { code: 'WS', name: 'Samoa' },
-  { code: 'SM', name: 'San Marino' },
-  { code: 'ST', name: 'Sao Tome Principe' },
-  { code: 'SA', name: 'Saudi Arabia' },
-  { code: 'SN', name: 'Senegal' },
-  { code: 'RS', name: 'Serbia' },
-  { code: 'SC', name: 'Seychelles' },
-  { code: 'SL', name: 'Sierra Leone' },
-  { code: 'SG', name: 'Singapore' },
-  { code: 'SX', name: 'Sint Maarten' },
-  { code: 'SK', name: 'Slovakia' },
-  { code: 'SI', name: 'Slovenia' },
-  { code: 'SB', name: 'Solomon Islands' },
-  { code: 'SO', name: 'Somalia' },
-  { code: 'ZA', name: 'South Africa' },
-  { code: 'KR', name: 'South Korea' },
-  { code: 'SS', name: 'South Sudan' },
-  { code: 'ES', name: 'Spain' },
-  { code: 'LK', name: 'Sri Lanka' },
-  { code: 'BL', name: 'St Barthelemy' },
-  { code: 'SH', name: 'St Helena' },
-  { code: 'KN', name: 'St Kitts Nevis' },
-  { code: 'LC', name: 'St Lucia' },
-  { code: 'MF', name: 'St Martin' },
-  { code: 'PM', name: 'St Pierre Miquelon' },
-  { code: 'VC', name: 'St Vincent Grenadines' },
-  { code: 'SD', name: 'Sudan' },
-  { code: 'SR', name: 'Suriname' },
-  { code: 'SJ', name: 'Svalbard Jan Mayen' },
-  { code: 'SE', name: 'Sweden' },
-  { code: 'CH', name: 'Switzerland' },
-  { code: 'SY', name: 'Syria' },
-  { code: 'TW', name: 'Taiwan' },
-  { code: 'TJ', name: 'Tajikistan' },
-  { code: 'TZ', name: 'Tanzania' },
-  { code: 'TH', name: 'Thailand' },
-  { code: 'TL', name: 'Timor Leste' },
-  { code: 'TG', name: 'Togo' },
-  { code: 'TK', name: 'Tokelau' },
-  { code: 'TO', name: 'Tonga' },
-  { code: 'TT', name: 'Trinidad Tobago' },
-  { code: 'TN', name: 'Tunisia' },
-  { code: 'TR', name: 'Turkiye' },
-  { code: 'TM', name: 'Turkmenistan' },
-  { code: 'TC', name: 'Turks Caicos Islands' },
-  { code: 'TV', name: 'Tuvalu' },
-  { code: 'UM', name: 'U S Outlying Islands' },
-  { code: 'VI', name: 'U S Virgin Islands' },
-  { code: 'UG', name: 'Uganda' },
-  { code: 'UA', name: 'Ukraine' },
-  { code: 'AE', name: 'United Arab Emirates' },
-  { code: 'GB', name: 'United Kingdom' },
-  { code: 'US', name: 'United States' },
-  { code: 'UY', name: 'Uruguay' },
-  { code: 'UZ', name: 'Uzbekistan' },
-  { code: 'VU', name: 'Vanuatu' },
-  { code: 'VA', name: 'Vatican City' },
-  { code: 'VE', name: 'Venezuela' },
-  { code: 'VN', name: 'Vietnam' },
-  { code: 'WF', name: 'Wallis Futuna' },
-  { code: 'EH', name: 'Western Sahara' },
-  { code: 'YE', name: 'Yemen' },
-  { code: 'ZM', name: 'Zambia' },
-  { code: 'ZW', name: 'Zimbabwe' },
-];
+import { countries } from '@/lib/countries';
 
 // Searchable Country Dropdown Component
 interface CountryDropdownProps {
@@ -266,7 +15,9 @@ interface CountryDropdownProps {
   placeholder?: string;
   label: string;
   fieldName: string;
-  formErrors?: any;
+  formErrors?: {
+    message?: string;
+  };
   apiErrors?: string[];
 }
 
@@ -307,7 +58,7 @@ function CountryDropdown({
   }, []);
 
   return (
-    <div className="relative" ref={dropdownRef}>
+    <div className="relative" ref={dropdownRef} data-field-name={fieldName}>
       <label className="block text-xs font-medium text-gray-600 mb-1.5 uppercase tracking-wide">{label.replace(' *', '')}</label>
       <div className="relative">
         <button
@@ -461,7 +212,22 @@ export default function RegisterPage() {
     },
   });
 
-  const onStep1Submit = (data: Step1FormData) => {
+  const nationalityValue = useWatch({
+    control: step2Form.control,
+    name: 'nationality',
+  });
+
+  const countryValue = useWatch({
+    control: step2Form.control,
+    name: 'country',
+  });
+
+  const tinValue = useWatch({
+    control: step2Form.control,
+    name: 'tin',
+  });
+
+  const onStep1Submit = () => {
     setApiErrors(null);
     setStep(2);
   };
@@ -503,7 +269,7 @@ export default function RegisterPage() {
 
       // Redirect to success page
       router.push('/register/success');
-    } catch (error) {
+    } catch {
       setApiErrors({
         message: 'An unexpected error occurred. Please try again.',
       });
@@ -558,7 +324,7 @@ export default function RegisterPage() {
     allErrors.forEach(({ displayName, errors }) => {
       errors.forEach((error) => {
         // Clean up error messages - remove technical jargon
-        let cleanError = error
+        const cleanError = error
           .replace(/This value should not be blank\.?/gi, 'This field is required')
           .replace(/This value is not valid\.?/gi, 'Invalid value')
           .replace(/You are not allowed to create user with country: ".*"/gi, 'This country is not allowed')
@@ -946,7 +712,7 @@ export default function RegisterPage() {
 
             <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
               <CountryDropdown
-                value={step2Form.watch('nationality') || ''}
+                value={nationalityValue || ''}
                 onChange={(value) => step2Form.setValue('nationality', value, { shouldValidate: true })}
                 error={!!step2Form.formState.errors.nationality || getFieldError('nationality').length > 0}
                 placeholder="Select nationality"
@@ -957,7 +723,7 @@ export default function RegisterPage() {
               />
 
               <CountryDropdown
-                value={step2Form.watch('country') || ''}
+                value={countryValue || ''}
                 onChange={(value) => step2Form.setValue('country', value, { shouldValidate: true })}
                 error={!!step2Form.formState.errors.country || getFieldError('country').length > 0}
                 placeholder="Select country"
@@ -979,35 +745,35 @@ export default function RegisterPage() {
                     step2Form.setValue('tin', '1', { shouldValidate: true });
                   }}
                   className={`relative rounded-md border p-3 transition-all duration-200 ${
-                    step2Form.watch('tin') === '1'
+                    tinValue === '1'
                       ? 'shadow-sm'
                       : 'border-gray-200 bg-white hover:border-gray-300'
                   }`}
-                  style={step2Form.watch('tin') === '1' ? { borderColor: '#ce7a55', backgroundColor: '#fef5f0', borderWidth: '2px' } : {}}
+                  style={tinValue === '1' ? { borderColor: '#ce7a55', backgroundColor: '#fef5f0', borderWidth: '2px' } : {}}
                 >
                   <div className="flex items-center justify-center gap-2">
                     <div
                       className={`flex h-8 w-8 items-center justify-center rounded-full ${
-                        step2Form.watch('tin') === '1'
+                        tinValue === '1'
                           ? 'text-white'
                           : 'bg-gray-100 text-gray-400'
                       }`}
-                      style={step2Form.watch('tin') === '1' ? { backgroundColor: '#ce7a55' } : {}}
+                      style={tinValue === '1' ? { backgroundColor: '#ce7a55' } : {}}
                     >
                       <span className="text-xs font-bold">MT4</span>
                     </div>
                     <span
                       className={`text-sm font-medium ${
-                        step2Form.watch('tin') === '1'
+                        tinValue === '1'
                           ? ''
                           : 'text-gray-600'
                       }`}
-                      style={step2Form.watch('tin') === '1' ? { color: '#ce7a55' } : {}}
+                      style={tinValue === '1' ? { color: '#ce7a55' } : {}}
                     >
                       MT4
                     </span>
                   </div>
-                  {step2Form.watch('tin') === '1' && (
+                  {tinValue === '1' && (
                     <div className="absolute right-1.5 top-1.5">
                       <svg
                         className="h-4 w-4"
@@ -1030,35 +796,35 @@ export default function RegisterPage() {
                     step2Form.setValue('tin', '2', { shouldValidate: true });
                   }}
                   className={`relative rounded-md border p-3 transition-all duration-200 ${
-                    step2Form.watch('tin') === '2'
+                    tinValue === '2'
                       ? 'shadow-sm'
                       : 'border-gray-200 bg-white hover:border-gray-300'
                   }`}
-                  style={step2Form.watch('tin') === '2' ? { borderColor: '#ce7a55', backgroundColor: '#fef5f0', borderWidth: '2px' } : {}}
+                  style={tinValue === '2' ? { borderColor: '#ce7a55', backgroundColor: '#fef5f0', borderWidth: '2px' } : {}}
                 >
                   <div className="flex items-center justify-center gap-2">
                     <div
                       className={`flex h-8 w-8 items-center justify-center rounded-full ${
-                        step2Form.watch('tin') === '2'
+                        tinValue === '2'
                           ? 'text-white'
                           : 'bg-gray-100 text-gray-400'
                       }`}
-                      style={step2Form.watch('tin') === '2' ? { backgroundColor: '#ce7a55' } : {}}
+                      style={tinValue === '2' ? { backgroundColor: '#ce7a55' } : {}}
                     >
                       <span className="text-xs font-bold">MT5</span>
                     </div>
                     <span
                       className={`text-sm font-medium ${
-                        step2Form.watch('tin') === '2'
+                        tinValue === '2'
                           ? ''
                           : 'text-gray-600'
                       }`}
-                      style={step2Form.watch('tin') === '2' ? { color: '#ce7a55' } : {}}
+                      style={tinValue === '2' ? { color: '#ce7a55' } : {}}
                     >
                       MT5
                     </span>
                   </div>
-                  {step2Form.watch('tin') === '2' && (
+                  {tinValue === '2' && (
                     <div className="absolute right-1.5 top-1.5">
                       <svg
                         className="h-4 w-4"
@@ -1107,4 +873,3 @@ export default function RegisterPage() {
     </div>
   );
 }
-
