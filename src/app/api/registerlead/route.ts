@@ -558,6 +558,7 @@ export async function POST(request: NextRequest) {
       email: parsedBody.data.email,
       lead: true,
       country: parsedBody.data.country.toUpperCase(),
+      tags: ['Learning Ebook Downloader'],
     };
 
     const response = await fetch(API_URL, {
