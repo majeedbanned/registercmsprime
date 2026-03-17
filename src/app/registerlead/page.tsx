@@ -8,10 +8,7 @@ import { useRouter } from 'next/navigation';
 import { countries } from '@/lib/countries';
 import TurnstileWidget from '@/components/turnstile-widget';
 
-const TURNSTILE_TEST_SITE_KEY = '1x00000000000000000000AA';
-const turnstileSiteKey =
-  process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY ||
-  (process.env.NODE_ENV === 'production' ? '' : TURNSTILE_TEST_SITE_KEY);
+const TURNSTILE_SITE_KEY = '0x4AAAAAAA0Zk0rGqldjkug7';
 
 const leadSchema = z.object({
   name: z.string().trim().min(1, 'Name is required'),
@@ -249,13 +246,13 @@ export default function RegisterLeadPage() {
             <label className="block text-xs font-medium uppercase tracking-wide text-gray-600">
               Security Check
             </label>
-            {turnstileSiteKey ? (
-              <div className="rounded-md border border-gray-200 bg-white p-3">
-                <TurnstileWidget
-                  siteKey={turnstileSiteKey}
-                  resetSignal={captchaResetSignal}
-                  onVerify={(token) => {
-                    form.setValue('turnstileToken', token, { shouldValidate: true });
+              {TURNSTILE_SITE_KEY ? (
+                <div className="rounded-md border border-gray-200 bg-white p-3">
+                  <TurnstileWidget
+                    siteKey={TURNSTILE_SITE_KEY}
+                    resetSignal={captchaResetSignal}
+                    onVerify={(token) => {
+                      form.setValue('turnstileToken', token, { shouldValidate: true });
                     if (token) {
                       form.clearErrors('turnstileToken');
                     }
@@ -293,7 +290,7 @@ export default function RegisterLeadPage() {
           <div className="mt-auto pt-4">
             <button
               type="submit"
-              disabled={isSubmitting || !turnstileSiteKey || !turnstileToken}
+              disabled={isSubmitting || !TURNSTILE_SITE_KEY || !turnstileToken}
               className="w-full rounded-md px-6 py-3 text-sm font-medium text-white shadow-sm transition-all duration-200 hover:shadow-md focus:outline-none focus:ring-2 focus:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-60"
               style={{ backgroundColor: isSubmitting ? '#a0a0a0' : '#ce7a55' }}
               onMouseEnter={(event) => {

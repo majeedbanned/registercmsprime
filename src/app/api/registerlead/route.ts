@@ -5,10 +5,7 @@ const API_URL = 'https://mycms.cmsprime.com/rest/users/new?version=1.0.0';
 const API_TOKEN =
   process.env.API_TOKEN ||
   '805e6648071ff54087a78d1f5e0a5508a3ed4fd92f692c704b4e3120991fcf3df3d2eab8d57ffb782d6e4d4fba12648fb04cc76c807ff684c96e5d24';
-const TURNSTILE_TEST_SECRET_KEY = '1x0000000000000000000000000000000AA';
-const TURNSTILE_SECRET_KEY =
-  process.env.TURNSTILE_SECRET_KEY ||
-  (process.env.NODE_ENV === 'production' ? '' : TURNSTILE_TEST_SECRET_KEY);
+const TURNSTILE_SECRET_KEY = '0x4AAAAAAA0Zk-LXoYb97vNrED5jRLCUgu4';
 
 const leadSchema = z.object({
   name: z.string().trim().min(1, 'Name is required'),
