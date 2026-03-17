@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { startTransition, useEffect, useState } from 'react';
 import { z } from 'zod';
 import { useForm, useWatch } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -15,7 +15,7 @@ const leadSchema = z.object({
   email: z.string().trim().email('Invalid email address'),
   country: z.string().trim().length(2, 'Country is required'),
   marketingConsent: z.boolean().optional(),
-  turnstileToken: z.string().trim().min(1, 'Please complete the captcha'),
+  turnstileToken: z.string().trim().optional(),
 });
 
 type LeadFormData = z.infer<typeof leadSchema>;
@@ -36,6 +36,7 @@ export default function RegisterLeadPage() {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [apiError, setApiError] = useState<ApiError | null>(null);
   const [captchaResetSignal, setCaptchaResetSignal] = useState(0);
+  const [isLocalhost, setIsLocalhost] = useState(false);
 
   const form = useForm<LeadFormData>({
     resolver: zodResolver(leadSchema),
@@ -57,6 +58,23 @@ export default function RegisterLeadPage() {
     control: form.control,
     name: 'turnstileToken',
   });
+
+  useEffect(() => {
+    const hostname = window.location.hostname;
+    const runningOnLocalhost =
+      hostname === 'localhost' ||
+      hostname === '127.0.0.1' ||
+      hostname === '::1';
+
+    startTransition(() => {
+      setIsLocalhost(runningOnLocalhost);
+    });
+
+    if (runningOnLocalhost) {
+      form.clearErrors('turnstileToken');
+      form.setValue('turnstileToken', '', { shouldValidate: false });
+    }
+  }, [form]);
 
   const getApiFieldErrors = (fieldName: keyof LeadFormData): string[] => {
     const field = apiError?.errors?.children?.[fieldName];
@@ -246,26 +264,30 @@ export default function RegisterLeadPage() {
             <label className="block text-xs font-medium uppercase tracking-wide text-gray-600">
               Security Check
             </label>
-              {TURNSTILE_SITE_KEY ? (
+            {isLocalhost ? (
+              <div className="rounded-md border border-amber-200 bg-amber-50 px-4 py-3 text-sm text-amber-800">
+                Captcha is disabled while the app is running on localhost.
+              </div>
+            ) : TURNSTILE_SITE_KEY ? (
                 <div className="rounded-md border border-gray-200 bg-white p-3">
                   <TurnstileWidget
                     siteKey={TURNSTILE_SITE_KEY}
                     resetSignal={captchaResetSignal}
                     onVerify={(token) => {
                       form.setValue('turnstileToken', token, { shouldValidate: true });
-                    if (token) {
-                      form.clearErrors('turnstileToken');
-                    }
-                  }}
-                  onError={(message) => {
-                    form.setValue('turnstileToken', '', { shouldValidate: true });
-                    form.setError('turnstileToken', {
-                      type: 'manual',
-                      message,
-                    });
-                  }}
-                />
-              </div>
+                      if (token) {
+                        form.clearErrors('turnstileToken');
+                      }
+                    }}
+                    onError={(message) => {
+                      form.setValue('turnstileToken', '', { shouldValidate: true });
+                      form.setError('turnstileToken', {
+                        type: 'manual',
+                        message,
+                      });
+                    }}
+                  />
+                </div>
             ) : (
               <div className="rounded-md border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-700">
                 Cloudflare Turnstile is not configured. Set
@@ -290,7 +312,10 @@ export default function RegisterLeadPage() {
           <div className="mt-auto pt-4">
             <button
               type="submit"
-              disabled={isSubmitting || !TURNSTILE_SITE_KEY || !turnstileToken}
+              disabled={
+                isSubmitting ||
+                (!isLocalhost && (!TURNSTILE_SITE_KEY || !turnstileToken))
+              }
               className="w-full rounded-md px-6 py-3 text-sm font-medium text-white shadow-sm transition-all duration-200 hover:shadow-md focus:outline-none focus:ring-2 focus:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-60"
               style={{ backgroundColor: isSubmitting ? '#a0a0a0' : '#ce7a55' }}
               onMouseEnter={(event) => {
