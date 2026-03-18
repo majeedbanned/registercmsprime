@@ -298,6 +298,7 @@ export async function POST(request: NextRequest) {
       email: parsedBody.data.email,
       country: parsedBody.data.country.toUpperCase(),
       phone: `${parsedBody.data.phoneCountryCode} ${parsedBody.data.phone}`.trim(),
+      tags: ['Contact Us Form'],
       lead: true,
     };
 
