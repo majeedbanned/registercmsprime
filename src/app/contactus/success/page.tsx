@@ -1,4 +1,4 @@
-export default function RegisterLeadSuccessPage() {
+export default function ContactUsSuccessPage() {
   return (
     <main className="flex min-h-screen items-center justify-center px-4 py-10">
       <div className="w-full max-w-md rounded-[28px] border border-[#ead8ce] bg-white p-8 text-center shadow-[0_24px_60px_-32px_rgba(86,42,21,0.35)]">
@@ -17,13 +17,9 @@ export default function RegisterLeadSuccessPage() {
             />
           </svg>
         </div>
-        <h1 className="mb-3 text-2xl font-semibold text-gray-900">
-        Thank You
-        </h1>
+        <h1 className="mb-3 text-2xl font-semibold text-gray-900">Thank You</h1>
         <p className="text-sm leading-relaxed text-gray-600">
-        Thank you! Your eBook is on its way to your inbox.
-
-
+          Your message has been received. Our team will get back to you shortly.
         </p>
       </div>
     </main>
