@@ -259,7 +259,7 @@ export default function ContactUsPage() {
               <select
                 id="country"
                 {...form.register('country')}
-                className={`w-full rounded-md border px-4 py-2.5 text-sm bg-white transition-all duration-200 focus:outline-none focus:ring-1 ${
+                className={`w-full rounded-md h-[45px] border px-4 py-2.5 text-sm bg-white transition-all duration-200 focus:outline-none focus:ring-1 ${
                   form.formState.errors.country || getApiFieldErrors('country').length > 0
                     ? 'border-red-300 focus:border-red-500 focus:ring-red-500'
                     : 'border-gray-200 focus:border-[#ce7a55] focus:ring-[#ce7a55]'
