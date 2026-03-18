@@ -252,10 +252,13 @@ export default function RegisterLeadPage() {
                 className="mt-0.5 h-4 w-4 rounded border-gray-300 text-[#ce7a55] focus:ring-[#ce7a55]"
               />
               <span className="text-sm leading-6 text-gray-600">
-                We would like to contact you via e-mail with our latest news,
-                product updates and offers. We will never release your personal
-                details to any company outside Vantage for mailing or marketing
-                purposes.
+        
+
+                Get timely insights, updates, and special offers delivered straight to you. 
+                We respect your privacy and will never share your information. You can unsubscribe at any time.
+
+
+
               </span>
             </label>
           </div>
