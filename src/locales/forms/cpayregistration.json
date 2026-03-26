@@ -1,0 +1,89 @@
+{
+  "en": {
+    "labels": {
+      "fullName": "Full Name",
+      "phone": "Phone Number",
+      "email": "Email Address",
+      "country": "Country",
+      "securityCheck": "Security Check"
+    },
+    "placeholders": {
+      "fullName": "Enter your full name",
+      "phone": "Enter your phone number",
+      "email": "you@example.com",
+      "country": "Select country"
+    },
+    "messages": {
+      "captchaDisabled": "Captcha is disabled while the app is running on localhost.",
+      "captchaNotConfigured": "Cloudflare Turnstile is not configured. Set NEXT_PUBLIC_TURNSTILE_SITE_KEY to enable the captcha.",
+      "captchaLoadFailed": "Captcha failed to load. Please try again.",
+      "captchaExpired": "Captcha expired. Please complete it again.",
+      "captchaScriptFailed": "Captcha script failed to load. Please refresh and try again.",
+      "submit": "Submit",
+      "submitting": "Submitting...",
+      "unexpectedError": "An unexpected error occurred. Please try again.",
+      "fullNameRequired": "Full name is required",
+      "phoneRequired": "Phone number is required",
+      "emailInvalid": "Invalid email address",
+      "countryRequired": "Country is required"
+    }
+  },
+  "ar": {
+    "labels": {
+      "fullName": "الاسم الكامل",
+      "phone": "رقم الهاتف",
+      "email": "البريد الإلكتروني",
+      "country": "الدولة",
+      "securityCheck": "التحقق الأمني"
+    },
+    "placeholders": {
+      "fullName": "أدخل اسمك الكامل",
+      "phone": "أدخل رقم هاتفك",
+      "email": "you@example.com",
+      "country": "اختر الدولة"
+    },
+    "messages": {
+      "captchaDisabled": "تم تعطيل التحقق أثناء تشغيل التطبيق على localhost.",
+      "captchaNotConfigured": "لم يتم إعداد Cloudflare Turnstile. قم بضبط NEXT_PUBLIC_TURNSTILE_SITE_KEY لتفعيل التحقق.",
+      "captchaLoadFailed": "فشل تحميل التحقق. يرجى المحاولة مرة أخرى.",
+      "captchaExpired": "انتهت صلاحية التحقق. يرجى إكماله مرة أخرى.",
+      "captchaScriptFailed": "فشل تحميل سكربت التحقق. يرجى تحديث الصفحة والمحاولة مرة أخرى.",
+      "submit": "إرسال",
+      "submitting": "جارٍ الإرسال...",
+      "unexpectedError": "حدث خطأ غير متوقع. يرجى المحاولة مرة أخرى.",
+      "fullNameRequired": "الاسم الكامل مطلوب",
+      "phoneRequired": "رقم الهاتف مطلوب",
+      "emailInvalid": "عنوان البريد الإلكتروني غير صالح",
+      "countryRequired": "الدولة مطلوبة"
+    }
+  },
+  "fa": {
+    "labels": {
+      "fullName": "نام کامل",
+      "phone": "شماره تلفن",
+      "email": "ایمیل",
+      "country": "کشور",
+      "securityCheck": "بررسی امنیتی"
+    },
+    "placeholders": {
+      "fullName": "نام کامل خود را وارد کنید",
+      "phone": "شماره تلفن خود را وارد کنید",
+      "email": "you@example.com",
+      "country": "کشور را انتخاب کنید"
+    },
+    "messages": {
+      "captchaDisabled": "کپچا هنگام اجرای برنامه روی localhost غیرفعال است.",
+      "captchaNotConfigured": "Cloudflare Turnstile پیکربندی نشده است. برای فعال‌سازی کپچا، NEXT_PUBLIC_TURNSTILE_SITE_KEY را تنظیم کنید.",
+      "captchaLoadFailed": "بارگذاری کپچا انجام نشد. لطفاً دوباره تلاش کنید.",
+      "captchaExpired": "اعتبار کپچا منقضی شد. لطفاً دوباره آن را تکمیل کنید.",
+      "captchaScriptFailed": "اسکریپت کپچا بارگذاری نشد. لطفاً صفحه را تازه‌سازی کرده و دوباره تلاش کنید.",
+      "submit": "ارسال",
+      "submitting": "در حال ارسال...",
+      "unexpectedError": "یک خطای غیرمنتظره رخ داد. لطفاً دوباره تلاش کنید.",
+      "fullNameRequired": "نام کامل الزامی است",
+      "phoneRequired": "شماره تلفن الزامی است",
+      "emailInvalid": "آدرس ایمیل نامعتبر است",
+      "countryRequired": "کشور الزامی است"
+    }
+  }
+}

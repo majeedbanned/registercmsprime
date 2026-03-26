@@ -1,0 +1,215 @@
+{
+  "en": {
+    "steps": {
+      "personalInfo": "Personal Info",
+      "additionalDetails": "Additional Details"
+    },
+    "labels": {
+      "firstName": "First Name",
+      "lastName": "Last Name",
+      "email": "Email Address",
+      "phone": "Phone Number",
+      "password": "Password",
+      "confirmPassword": "Confirm Password",
+      "nationality": "Nationality",
+      "country": "Country",
+      "selectPlatform": "Select Platform"
+    },
+    "placeholders": {
+      "firstName": "Enter your first name",
+      "lastName": "Enter your last name",
+      "email": "your.email@example.com",
+      "phone": "+1234567890",
+      "password": "Enter your password",
+      "confirmPassword": "Re-enter your password",
+      "selectNationality": "Select nationality",
+      "selectCountry": "Select country",
+      "searchCountry": "Search country..."
+    },
+    "buttons": {
+      "continue": "Continue",
+      "back": "Back",
+      "completeRegistration": "Complete Registration",
+      "registering": "Registering...",
+      "gotIt": "Got it",
+      "close": "Close"
+    },
+    "messages": {
+      "registrationFailed": "Registration Failed",
+      "correctErrors": "Please correct the errors below",
+      "noCountriesFound": "No countries found",
+      "unexpectedError": "An unexpected error occurred. Please try again.",
+      "fieldRequired": "This field is required",
+      "invalidValue": "Invalid value",
+      "countryNotAllowed": "This country is not allowed",
+      "formCheck": "Please check the form and try again."
+    },
+    "validation": {
+      "firstNameRequired": "First name is required",
+      "lastNameRequired": "Last name is required",
+      "emailInvalid": "Invalid email address",
+      "phoneRequired": "Phone number is required",
+      "passwordMin": "Password must be at least 6 characters",
+      "confirmPasswordRequired": "Please confirm your password",
+      "nationalityRequired": "Nationality must be a 2-letter country code",
+      "countryRequired": "Country must be a 2-letter country code",
+      "platformRequired": "Please select your platform",
+      "passwordsMismatch": "Passwords don't match"
+    },
+    "fieldNames": {
+      "firstName": "First Name",
+      "lastName": "Last Name",
+      "middleName": "Middle Name",
+      "email": "Email",
+      "phone": "Phone",
+      "password": "Password",
+      "birthDate": "Birth Date",
+      "nationality": "Nationality",
+      "country": "Country",
+      "tin": "Platform",
+      "lead": "Lead Status"
+    }
+  },
+  "ar": {
+    "steps": {
+      "personalInfo": "المعلومات الشخصية",
+      "additionalDetails": "تفاصيل إضافية"
+    },
+    "labels": {
+      "firstName": "الاسم الأول",
+      "lastName": "اسم العائلة",
+      "email": "البريد الإلكتروني",
+      "phone": "رقم الهاتف",
+      "password": "كلمة المرور",
+      "confirmPassword": "تأكيد كلمة المرور",
+      "nationality": "الجنسية",
+      "country": "الدولة",
+      "selectPlatform": "اختر المنصة"
+    },
+    "placeholders": {
+      "firstName": "أدخل اسمك الأول",
+      "lastName": "أدخل اسم العائلة",
+      "email": "your.email@example.com",
+      "phone": "+1234567890",
+      "password": "أدخل كلمة المرور",
+      "confirmPassword": "أعد إدخال كلمة المرور",
+      "selectNationality": "اختر الجنسية",
+      "selectCountry": "اختر الدولة",
+      "searchCountry": "ابحث عن دولة..."
+    },
+    "buttons": {
+      "continue": "متابعة",
+      "back": "رجوع",
+      "completeRegistration": "إكمال التسجيل",
+      "registering": "جارٍ التسجيل...",
+      "gotIt": "حسنًا",
+      "close": "إغلاق"
+    },
+    "messages": {
+      "registrationFailed": "فشل التسجيل",
+      "correctErrors": "يرجى تصحيح الأخطاء أدناه",
+      "noCountriesFound": "لم يتم العثور على دول",
+      "unexpectedError": "حدث خطأ غير متوقع. يرجى المحاولة مرة أخرى.",
+      "fieldRequired": "هذا الحقل مطلوب",
+      "invalidValue": "قيمة غير صالحة",
+      "countryNotAllowed": "هذه الدولة غير مسموح بها",
+      "formCheck": "يرجى مراجعة النموذج والمحاولة مرة أخرى."
+    },
+    "validation": {
+      "firstNameRequired": "الاسم الأول مطلوب",
+      "lastNameRequired": "اسم العائلة مطلوب",
+      "emailInvalid": "عنوان البريد الإلكتروني غير صالح",
+      "phoneRequired": "رقم الهاتف مطلوب",
+      "passwordMin": "يجب أن تتكون كلمة المرور من 6 أحرف على الأقل",
+      "confirmPasswordRequired": "يرجى تأكيد كلمة المرور",
+      "nationalityRequired": "يجب أن تكون الجنسية رمز دولة مكونًا من حرفين",
+      "countryRequired": "يجب أن تكون الدولة رمز دولة مكونًا من حرفين",
+      "platformRequired": "يرجى اختيار المنصة",
+      "passwordsMismatch": "كلمتا المرور غير متطابقتين"
+    },
+    "fieldNames": {
+      "firstName": "الاسم الأول",
+      "lastName": "اسم العائلة",
+      "middleName": "الاسم الأوسط",
+      "email": "البريد الإلكتروني",
+      "phone": "الهاتف",
+      "password": "كلمة المرور",
+      "birthDate": "تاريخ الميلاد",
+      "nationality": "الجنسية",
+      "country": "الدولة",
+      "tin": "المنصة",
+      "lead": "حالة العميل"
+    }
+  },
+  "fa": {
+    "steps": {
+      "personalInfo": "اطلاعات شخصی",
+      "additionalDetails": "جزئیات بیشتر"
+    },
+    "labels": {
+      "firstName": "نام",
+      "lastName": "نام خانوادگی",
+      "email": "ایمیل",
+      "phone": "شماره تلفن",
+      "password": "رمز عبور",
+      "confirmPassword": "تأیید رمز عبور",
+      "nationality": "ملیت",
+      "country": "کشور",
+      "selectPlatform": "پلتفرم را انتخاب کنید"
+    },
+    "placeholders": {
+      "firstName": "نام خود را وارد کنید",
+      "lastName": "نام خانوادگی خود را وارد کنید",
+      "email": "your.email@example.com",
+      "phone": "+1234567890",
+      "password": "رمز عبور خود را وارد کنید",
+      "confirmPassword": "رمز عبور را دوباره وارد کنید",
+      "selectNationality": "ملیت را انتخاب کنید",
+      "selectCountry": "کشور را انتخاب کنید",
+      "searchCountry": "جستجوی کشور..."
+    },
+    "buttons": {
+      "continue": "ادامه",
+      "back": "بازگشت",
+      "completeRegistration": "تکمیل ثبت‌نام",
+      "registering": "در حال ثبت‌نام...",
+      "gotIt": "متوجه شدم",
+      "close": "بستن"
+    },
+    "messages": {
+      "registrationFailed": "ثبت‌نام ناموفق بود",
+      "correctErrors": "لطفاً خطاهای زیر را برطرف کنید",
+      "noCountriesFound": "کشوری پیدا نشد",
+      "unexpectedError": "یک خطای غیرمنتظره رخ داد. لطفاً دوباره تلاش کنید.",
+      "fieldRequired": "این فیلد الزامی است",
+      "invalidValue": "مقدار نامعتبر است",
+      "countryNotAllowed": "این کشور مجاز نیست",
+      "formCheck": "لطفاً فرم را بررسی کرده و دوباره تلاش کنید."
+    },
+    "validation": {
+      "firstNameRequired": "نام الزامی است",
+      "lastNameRequired": "نام خانوادگی الزامی است",
+      "emailInvalid": "آدرس ایمیل نامعتبر است",
+      "phoneRequired": "شماره تلفن الزامی است",
+      "passwordMin": "رمز عبور باید حداقل 6 کاراکتر باشد",
+      "confirmPasswordRequired": "لطفاً رمز عبور را تأیید کنید",
+      "nationalityRequired": "ملیت باید کد دو حرفی کشور باشد",
+      "countryRequired": "کشور باید کد دو حرفی کشور باشد",
+      "platformRequired": "لطفاً پلتفرم را انتخاب کنید",
+      "passwordsMismatch": "رمزهای عبور یکسان نیستند"
+    },
+    "fieldNames": {
+      "firstName": "نام",
+      "lastName": "نام خانوادگی",
+      "middleName": "نام میانی",
+      "email": "ایمیل",
+      "phone": "تلفن",
+      "password": "رمز عبور",
+      "birthDate": "تاریخ تولد",
+      "nationality": "ملیت",
+      "country": "کشور",
+      "tin": "پلتفرم",
+      "lead": "وضعیت لید"
+    }
+  }
+}

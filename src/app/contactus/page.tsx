@@ -1,31 +1,26 @@
 'use client';
 
-import { startTransition, useEffect, useState } from 'react';
+import { Suspense, startTransition, useEffect, useState } from 'react';
 import { z } from 'zod';
 import { useForm, useWatch } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { useRouter } from 'next/navigation';
+import { useRouter, useSearchParams } from 'next/navigation';
 import { countries } from '@/lib/countries';
 import {
   phoneCountryCodeByCode,
   phoneCountryCodes,
 } from '@/lib/phone-country-codes';
 import TurnstileWidget from '@/components/turnstile-widget';
+import {
+  getFormDirection,
+  normalizeFormLanguage,
+  type FormLanguage,
+} from '@/lib/form-language';
+import contactUsTranslations from '@/locales/forms/contactus.json';
 
 const TURNSTILE_SITE_KEY = '0x4AAAAAAA0Zk0rGqldjkug7';
 
-const contactSchema = z.object({
-  name: z.string().trim().min(1, 'Name is required'),
-  email: z.string().trim().email('Invalid email address'),
-  country: z.string().trim().length(2, 'Country is required'),
-  phoneCountryCode: z.string().trim().min(1, 'Country code is required'),
-  phone: z.string().trim().min(1, 'Phone number is required'),
-  subject: z.string().trim().min(1, 'Subject is required'),
-  message: z.string().trim().min(1, 'Message is required'),
-  turnstileToken: z.string().trim().optional(),
-});
-
-type ContactFormData = z.infer<typeof contactSchema>;
+type ContactUsCopy = (typeof contactUsTranslations)['en'];
 
 interface ApiError {
   message?: string;
@@ -38,12 +33,30 @@ interface ApiError {
   };
 }
 
-export default function ContactUsPage() {
+function createContactSchema(copy: ContactUsCopy) {
+  return z.object({
+    name: z.string().trim().min(1, copy.messages.nameRequired),
+    email: z.string().trim().email(copy.messages.emailInvalid),
+    country: z.string().trim().length(2, copy.messages.countryRequired),
+    phoneCountryCode: z.string().trim().min(1, copy.messages.phoneCodeRequired),
+    phone: z.string().trim().min(1, copy.messages.phoneRequired),
+    subject: z.string().trim().min(1, copy.messages.subjectRequired),
+    message: z.string().trim().min(1, copy.messages.messageRequired),
+    turnstileToken: z.string().trim().optional(),
+  });
+}
+
+type ContactFormData = z.infer<ReturnType<typeof createContactSchema>>;
+
+function ContactUsPageContent({ language }: { language: FormLanguage }) {
   const router = useRouter();
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [apiError, setApiError] = useState<ApiError | null>(null);
   const [captchaResetSignal, setCaptchaResetSignal] = useState(0);
   const [isLocalhost, setIsLocalhost] = useState(false);
+  const direction = getFormDirection(language);
+  const copy = contactUsTranslations[language];
+  const contactSchema = createContactSchema(copy);
 
   const form = useForm<ContactFormData>({
     resolver: zodResolver(contactSchema),
@@ -122,7 +135,7 @@ export default function ContactUsPage() {
     return field.errors || [];
   };
 
-  const hasApiFieldErrors = (
+  const hasApiFieldErrors =
     getApiFieldErrors('name').length > 0 ||
     getApiFieldErrors('email').length > 0 ||
     getApiFieldErrors('country').length > 0 ||
@@ -130,8 +143,7 @@ export default function ContactUsPage() {
     getApiFieldErrors('phone').length > 0 ||
     getApiFieldErrors('subject').length > 0 ||
     getApiFieldErrors('message').length > 0 ||
-    getApiFieldErrors('turnstileToken').length > 0
-  );
+    getApiFieldErrors('turnstileToken').length > 0;
 
   const onSubmit = async (data: ContactFormData) => {
     setIsSubmitting(true);
@@ -158,7 +170,7 @@ export default function ContactUsPage() {
       router.push('/contactus/success');
     } catch {
       setApiError({
-        message: 'An unexpected error occurred. Please try again.',
+        message: copy.messages.unexpectedError,
       });
       setCaptchaResetSignal((value) => value + 1);
       setIsSubmitting(false);
@@ -181,13 +193,17 @@ export default function ContactUsPage() {
   );
 
   return (
-    <div className="w-full max-w-2xl mx-auto p-6">
+    <div
+      dir={direction}
+      lang={language}
+      className="mx-auto w-full max-w-2xl p-6"
+    >
       <div className="mb-10 text-center">
         <h1 className="text-4xl font-semibold tracking-tight text-gray-900 sm:text-5xl">
-          Contact Us
+          {copy.heading}
         </h1>
         <p className="mt-3 text-base text-gray-600 sm:text-lg">
-          We are here for you. How can we help?
+          {copy.subheading}
         </p>
       </div>
 
@@ -200,7 +216,7 @@ export default function ContactUsPage() {
       <div className="relative overflow-hidden">
         <form
           onSubmit={form.handleSubmit(onSubmit)}
-          className="space-y-5 min-h-[400px] flex flex-col"
+          className="flex min-h-[400px] flex-col space-y-5"
         >
           <input type="hidden" {...form.register('turnstileToken')} />
 
@@ -210,14 +226,14 @@ export default function ContactUsPage() {
                 htmlFor="name"
                 className="mb-1.5 block text-xs font-medium uppercase tracking-wide text-gray-600"
               >
-                Name
+                {copy.labels.name}
               </label>
               <input
                 id="name"
                 {...form.register('name')}
                 type="text"
-                placeholder="Enter your name"
-                className={`w-full rounded-md border px-4 py-2.5 text-sm bg-white transition-all duration-200 focus:outline-none focus:ring-1 ${
+                placeholder={copy.placeholders.name}
+                className={`w-full rounded-md border bg-white px-4 py-2.5 text-sm transition-all duration-200 focus:outline-none focus:ring-1 ${
                   form.formState.errors.name || getApiFieldErrors('name').length > 0
                     ? 'border-red-300 focus:border-red-500 focus:ring-red-500'
                     : 'border-gray-200 focus:border-[#ce7a55] focus:ring-[#ce7a55]'
@@ -231,14 +247,15 @@ export default function ContactUsPage() {
                 htmlFor="email"
                 className="mb-1.5 block text-xs font-medium uppercase tracking-wide text-gray-600"
               >
-                Email Address
+                {copy.labels.email}
               </label>
               <input
                 id="email"
                 {...form.register('email')}
+                dir="ltr"
                 type="email"
-                placeholder="you@example.com"
-                className={`w-full rounded-md border px-4 py-2.5 text-sm bg-white transition-all duration-200 focus:outline-none focus:ring-1 ${
+                placeholder={copy.placeholders.email}
+                className={`w-full rounded-md border bg-white px-4 py-2.5 text-left text-sm transition-all duration-200 focus:outline-none focus:ring-1 ${
                   form.formState.errors.email || getApiFieldErrors('email').length > 0
                     ? 'border-red-300 focus:border-red-500 focus:ring-red-500'
                     : 'border-gray-200 focus:border-[#ce7a55] focus:ring-[#ce7a55]'
@@ -254,18 +271,18 @@ export default function ContactUsPage() {
                 htmlFor="country"
                 className="mb-1.5 block text-xs font-medium uppercase tracking-wide text-gray-600"
               >
-                Country
+                {copy.labels.country}
               </label>
               <select
                 id="country"
                 {...form.register('country')}
-                className={`w-full rounded-md h-[45px] border px-4 py-2.5 text-sm bg-white transition-all duration-200 focus:outline-none focus:ring-1 ${
+                className={`h-[45px] w-full rounded-md border bg-white px-4 py-2.5 text-sm transition-all duration-200 focus:outline-none focus:ring-1 ${
                   form.formState.errors.country || getApiFieldErrors('country').length > 0
                     ? 'border-red-300 focus:border-red-500 focus:ring-red-500'
                     : 'border-gray-200 focus:border-[#ce7a55] focus:ring-[#ce7a55]'
                 } ${selectedCountry ? 'text-gray-900' : 'text-gray-500'}`}
               >
-                <option value="">Select country</option>
+                <option value="">{copy.placeholders.country}</option>
                 {countries.map((country) => (
                   <option key={country.code} value={country.code}>
                     {country.code} - {country.name}
@@ -280,20 +297,20 @@ export default function ContactUsPage() {
                 htmlFor="phone"
                 className="mb-1.5 block text-xs font-medium uppercase tracking-wide text-gray-600"
               >
-                Phone Number
+                {copy.labels.phone}
               </label>
               <div className="grid grid-cols-1 gap-3 sm:grid-cols-3">
                 <select
-                  aria-label="Phone country code"
+                  aria-label={copy.labels.phoneCode}
                   {...form.register('phoneCountryCode')}
-                  className={`w-full rounded-md border px-4 py-2.5 text-sm bg-white transition-all duration-200 focus:outline-none focus:ring-1 sm:col-span-1 ${
+                  className={`w-full rounded-md border bg-white px-4 py-2.5 text-sm transition-all duration-200 focus:outline-none focus:ring-1 sm:col-span-1 ${
                     form.formState.errors.phoneCountryCode ||
                     getApiFieldErrors('phoneCountryCode').length > 0
                       ? 'border-red-300 focus:border-red-500 focus:ring-red-500'
                       : 'border-gray-200 focus:border-[#ce7a55] focus:ring-[#ce7a55]'
                   } ${selectedPhoneCountryCode ? 'text-gray-900' : 'text-gray-500'}`}
                 >
-                  <option value="">Code</option>
+                  <option value="">{copy.placeholders.phoneCode}</option>
                   {phoneCountryCodes.map((country) => (
                     <option key={`${country.code}-${country.dialCode}`} value={country.dialCode}>
                       {country.name} ({country.code}) {country.dialCode}
@@ -304,9 +321,10 @@ export default function ContactUsPage() {
                 <input
                   id="phone"
                   {...form.register('phone')}
+                  dir="ltr"
                   type="tel"
-                  placeholder="Enter your phone number"
-                  className={`w-full rounded-md border px-4 py-2.5 text-sm bg-white transition-all duration-200 focus:outline-none focus:ring-1 sm:col-span-2 ${
+                  placeholder={copy.placeholders.phone}
+                  className={`w-full rounded-md border bg-white px-4 py-2.5 text-left text-sm transition-all duration-200 focus:outline-none focus:ring-1 sm:col-span-2 ${
                     form.formState.errors.phone || getApiFieldErrors('phone').length > 0
                       ? 'border-red-300 focus:border-red-500 focus:ring-red-500'
                       : 'border-gray-200 focus:border-[#ce7a55] focus:ring-[#ce7a55]'
@@ -323,14 +341,14 @@ export default function ContactUsPage() {
               htmlFor="subject"
               className="mb-1.5 block text-xs font-medium uppercase tracking-wide text-gray-600"
             >
-              Subject
+              {copy.labels.subject}
             </label>
             <input
               id="subject"
               {...form.register('subject')}
               type="text"
-              placeholder="Enter your subject"
-              className={`w-full rounded-md border px-4 py-2.5 text-sm bg-white transition-all duration-200 focus:outline-none focus:ring-1 ${
+              placeholder={copy.placeholders.subject}
+              className={`w-full rounded-md border bg-white px-4 py-2.5 text-sm transition-all duration-200 focus:outline-none focus:ring-1 ${
                 form.formState.errors.subject || getApiFieldErrors('subject').length > 0
                   ? 'border-red-300 focus:border-red-500 focus:ring-red-500'
                   : 'border-gray-200 focus:border-[#ce7a55] focus:ring-[#ce7a55]'
@@ -344,14 +362,14 @@ export default function ContactUsPage() {
               htmlFor="message"
               className="mb-1.5 block text-xs font-medium uppercase tracking-wide text-gray-600"
             >
-              Message
+              {copy.labels.message}
             </label>
             <textarea
               id="message"
               {...form.register('message')}
               rows={6}
-              placeholder="Tell us how we can help"
-              className={`w-full rounded-md border px-4 py-3 text-sm bg-white transition-all duration-200 focus:outline-none focus:ring-1 ${
+              placeholder={copy.placeholders.message}
+              className={`w-full rounded-md border bg-white px-4 py-3 text-sm transition-all duration-200 focus:outline-none focus:ring-1 ${
                 form.formState.errors.message || getApiFieldErrors('message').length > 0
                   ? 'border-red-300 focus:border-red-500 focus:ring-red-500'
                   : 'border-gray-200 focus:border-[#ce7a55] focus:ring-[#ce7a55]'
@@ -362,17 +380,22 @@ export default function ContactUsPage() {
 
           <div className="space-y-2">
             <label className="block text-xs font-medium uppercase tracking-wide text-gray-600">
-              Security Check
+              {copy.labels.securityCheck}
             </label>
             {isLocalhost ? (
               <div className="rounded-md border border-amber-200 bg-amber-50 px-4 py-3 text-sm text-amber-800">
-                Captcha is disabled while the app is running on localhost.
+                {copy.messages.captchaDisabled}
               </div>
             ) : TURNSTILE_SITE_KEY ? (
               <div className="rounded-md border border-gray-200 bg-white p-3">
                 <TurnstileWidget
                   siteKey={TURNSTILE_SITE_KEY}
                   resetSignal={captchaResetSignal}
+                  messages={{
+                    loadFailed: copy.messages.captchaLoadFailed,
+                    expired: copy.messages.captchaExpired,
+                    scriptFailed: copy.messages.captchaScriptFailed,
+                  }}
                   onVerify={(token) => {
                     form.setValue('turnstileToken', token, { shouldValidate: true });
                     if (token) {
@@ -390,9 +413,7 @@ export default function ContactUsPage() {
               </div>
             ) : (
               <div className="rounded-md border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-700">
-                Cloudflare Turnstile is not configured. Set{' '}
-                <code>NEXT_PUBLIC_TURNSTILE_SITE_KEY</code> to enable the
-                captcha.
+                {copy.messages.captchaNotConfigured}
               </div>
             )}
             {renderFieldErrors('turnstileToken')}
@@ -418,11 +439,26 @@ export default function ContactUsPage() {
                 }
               }}
             >
-              {isSubmitting ? 'Submitting...' : 'Submit'}
+              {isSubmitting ? copy.messages.submitting : copy.messages.submit}
             </button>
           </div>
         </form>
       </div>
     </div>
+  );
+}
+
+function ContactUsPageWithSearchParams() {
+  const searchParams = useSearchParams();
+  const language = normalizeFormLanguage(searchParams.get('lang'));
+
+  return <ContactUsPageContent key={language} language={language} />;
+}
+
+export default function ContactUsPage() {
+  return (
+    <Suspense fallback={<ContactUsPageContent language="en" />}>
+      <ContactUsPageWithSearchParams />
+    </Suspense>
   );
 }

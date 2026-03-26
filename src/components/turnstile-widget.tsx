@@ -29,6 +29,11 @@ interface TurnstileWidgetProps {
   resetSignal: number;
   onVerify: (token: string) => void;
   onError: (message: string) => void;
+  messages?: {
+    loadFailed?: string;
+    expired?: string;
+    scriptFailed?: string;
+  };
 }
 
 export default function TurnstileWidget({
@@ -36,12 +41,14 @@ export default function TurnstileWidget({
   resetSignal,
   onVerify,
   onError,
+  messages,
 }: TurnstileWidgetProps) {
   const containerRef = useRef<HTMLDivElement>(null);
   const widgetIdRef = useRef<string | null>(null);
   const previousResetSignalRef = useRef(resetSignal);
   const verifyCallbackRef = useRef(onVerify);
   const errorCallbackRef = useRef(onError);
+  const messagesRef = useRef(messages);
   const [scriptReady, setScriptReady] = useState(
     () => typeof window !== 'undefined' && Boolean(window.turnstile)
   );
@@ -49,7 +56,8 @@ export default function TurnstileWidget({
   useEffect(() => {
     verifyCallbackRef.current = onVerify;
     errorCallbackRef.current = onError;
-  }, [onVerify, onError]);
+    messagesRef.current = messages;
+  }, [messages, onVerify, onError]);
 
   useEffect(() => {
     if (!scriptReady || !siteKey || !containerRef.current || !window.turnstile || widgetIdRef.current) {
@@ -65,11 +73,15 @@ export default function TurnstileWidget({
       },
       'error-callback': () => {
         verifyCallbackRef.current('');
-        errorCallbackRef.current('Captcha failed to load. Please try again.');
+        errorCallbackRef.current(
+          messagesRef.current?.loadFailed || 'Captcha failed to load. Please try again.'
+        );
       },
       'expired-callback': () => {
         verifyCallbackRef.current('');
-        errorCallbackRef.current('Captcha expired. Please complete it again.');
+        errorCallbackRef.current(
+          messagesRef.current?.expired || 'Captcha expired. Please complete it again.'
+        );
       },
     });
 
@@ -106,7 +118,10 @@ export default function TurnstileWidget({
           setScriptReady(true);
         }}
         onError={() => {
-          errorCallbackRef.current('Captcha script failed to load. Please refresh and try again.');
+          errorCallbackRef.current(
+            messagesRef.current?.scriptFailed ||
+              'Captcha script failed to load. Please refresh and try again.'
+          );
         }}
       />
       <div ref={containerRef} />

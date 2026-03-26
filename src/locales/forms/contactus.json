@@ -1,0 +1,122 @@
+{
+  "en": {
+    "heading": "Contact Us",
+    "subheading": "We are here for you. How can we help?",
+    "labels": {
+      "name": "Name",
+      "email": "Email Address",
+      "country": "Country",
+      "phone": "Phone Number",
+      "subject": "Subject",
+      "message": "Message",
+      "securityCheck": "Security Check",
+      "phoneCode": "Code"
+    },
+    "placeholders": {
+      "name": "Enter your name",
+      "email": "you@example.com",
+      "country": "Select country",
+      "phone": "Enter your phone number",
+      "subject": "Enter your subject",
+      "message": "Tell us how we can help",
+      "phoneCode": "Code"
+    },
+    "messages": {
+      "captchaDisabled": "Captcha is disabled while the app is running on localhost.",
+      "captchaNotConfigured": "Cloudflare Turnstile is not configured. Set NEXT_PUBLIC_TURNSTILE_SITE_KEY to enable the captcha.",
+      "captchaLoadFailed": "Captcha failed to load. Please try again.",
+      "captchaExpired": "Captcha expired. Please complete it again.",
+      "captchaScriptFailed": "Captcha script failed to load. Please refresh and try again.",
+      "submit": "Submit",
+      "submitting": "Submitting...",
+      "unexpectedError": "An unexpected error occurred. Please try again.",
+      "nameRequired": "Name is required",
+      "emailInvalid": "Invalid email address",
+      "countryRequired": "Country is required",
+      "phoneRequired": "Phone number is required",
+      "subjectRequired": "Subject is required",
+      "messageRequired": "Message is required",
+      "phoneCodeRequired": "Country code is required"
+    }
+  },
+  "ar": {
+    "heading": "اتصل بنا",
+    "subheading": "نحن هنا من أجلك. كيف يمكننا مساعدتك؟",
+    "labels": {
+      "name": "الاسم",
+      "email": "البريد الإلكتروني",
+      "country": "الدولة",
+      "phone": "رقم الهاتف",
+      "subject": "الموضوع",
+      "message": "الرسالة",
+      "securityCheck": "التحقق الأمني",
+      "phoneCode": "المفتاح"
+    },
+    "placeholders": {
+      "name": "أدخل اسمك",
+      "email": "you@example.com",
+      "country": "اختر الدولة",
+      "phone": "أدخل رقم هاتفك",
+      "subject": "أدخل الموضوع",
+      "message": "أخبرنا كيف يمكننا مساعدتك",
+      "phoneCode": "المفتاح"
+    },
+    "messages": {
+      "captchaDisabled": "تم تعطيل التحقق أثناء تشغيل التطبيق على localhost.",
+      "captchaNotConfigured": "لم يتم إعداد Cloudflare Turnstile. قم بضبط NEXT_PUBLIC_TURNSTILE_SITE_KEY لتفعيل التحقق.",
+      "captchaLoadFailed": "فشل تحميل التحقق. يرجى المحاولة مرة أخرى.",
+      "captchaExpired": "انتهت صلاحية التحقق. يرجى إكماله مرة أخرى.",
+      "captchaScriptFailed": "فشل تحميل سكربت التحقق. يرجى تحديث الصفحة والمحاولة مرة أخرى.",
+      "submit": "إرسال",
+      "submitting": "جارٍ الإرسال...",
+      "unexpectedError": "حدث خطأ غير متوقع. يرجى المحاولة مرة أخرى.",
+      "nameRequired": "الاسم مطلوب",
+      "emailInvalid": "عنوان البريد الإلكتروني غير صالح",
+      "countryRequired": "الدولة مطلوبة",
+      "phoneRequired": "رقم الهاتف مطلوب",
+      "subjectRequired": "الموضوع مطلوب",
+      "messageRequired": "الرسالة مطلوبة",
+      "phoneCodeRequired": "مفتاح الدولة مطلوب"
+    }
+  },
+  "fa": {
+    "heading": "تماس با ما",
+    "subheading": "ما اینجا هستیم تا به شما کمک کنیم. چگونه می‌توانیم کمک کنیم؟",
+    "labels": {
+      "name": "نام",
+      "email": "ایمیل",
+      "country": "کشور",
+      "phone": "شماره تلفن",
+      "subject": "موضوع",
+      "message": "پیام",
+      "securityCheck": "بررسی امنیتی",
+      "phoneCode": "کد"
+    },
+    "placeholders": {
+      "name": "نام خود را وارد کنید",
+      "email": "you@example.com",
+      "country": "کشور را انتخاب کنید",
+      "phone": "شماره تلفن خود را وارد کنید",
+      "subject": "موضوع را وارد کنید",
+      "message": "بگویید چگونه می‌توانیم کمک کنیم",
+      "phoneCode": "کد"
+    },
+    "messages": {
+      "captchaDisabled": "کپچا هنگام اجرای برنامه روی localhost غیرفعال است.",
+      "captchaNotConfigured": "Cloudflare Turnstile پیکربندی نشده است. برای فعال‌سازی کپچا، NEXT_PUBLIC_TURNSTILE_SITE_KEY را تنظیم کنید.",
+      "captchaLoadFailed": "بارگذاری کپچا انجام نشد. لطفاً دوباره تلاش کنید.",
+      "captchaExpired": "اعتبار کپچا منقضی شد. لطفاً دوباره آن را تکمیل کنید.",
+      "captchaScriptFailed": "اسکریپت کپچا بارگذاری نشد. لطفاً صفحه را تازه‌سازی کرده و دوباره تلاش کنید.",
+      "submit": "ارسال",
+      "submitting": "در حال ارسال...",
+      "unexpectedError": "یک خطای غیرمنتظره رخ داد. لطفاً دوباره تلاش کنید.",
+      "nameRequired": "نام الزامی است",
+      "emailInvalid": "آدرس ایمیل نامعتبر است",
+      "countryRequired": "کشور الزامی است",
+      "phoneRequired": "شماره تلفن الزامی است",
+      "subjectRequired": "موضوع الزامی است",
+      "messageRequired": "پیام الزامی است",
+      "phoneCodeRequired": "کد کشور الزامی است"
+    }
+  }
+}
