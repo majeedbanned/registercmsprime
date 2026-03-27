@@ -95,6 +95,8 @@ function CpayRegistrationPageContent({
     }
   }, [form]);
 
+  const dedupeErrors = (errors: string[]) => [...new Set(errors)];
+
   const getApiFieldErrors = (
     fieldName: keyof CpayRegistrationFormData
   ): string[] => {
@@ -105,10 +107,12 @@ function CpayRegistrationPageContent({
     }
 
     if (Array.isArray(field)) {
-      return field.filter((value): value is string => typeof value === 'string');
+      return dedupeErrors(
+        field.filter((value): value is string => typeof value === 'string')
+      );
     }
 
-    return field.errors || [];
+    return dedupeErrors(field.errors || []);
   };
 
   const hasApiFieldErrors =
