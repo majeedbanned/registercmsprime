@@ -16,6 +16,12 @@ import cpayRegistrationTranslations from '@/locales/forms/cpayregistration.json'
 
 const TURNSTILE_SITE_KEY = '0x4AAAAAAA0Zk0rGqldjkug7';
 
+// When the page is opened with a ?nabd query param it is a NABD campaign landing
+// page: the lead is tagged accordingly (server-side) and a one-time conversion ping
+// is fired to this thank-you URL after a successful registration.
+const NABD_THANKYOU_URL =
+  'https://cmsprime.com/cms/landing/nabdcpay/ar/thank-you/';
+
 type CpayRegistrationCopy = (typeof cpayRegistrationTranslations)['en'];
 
 interface ApiError {
@@ -45,8 +51,10 @@ type CpayRegistrationFormData = z.infer<
 
 function CpayRegistrationPageContent({
   language,
+  nabd,
 }: {
   language: FormLanguage;
+  nabd: boolean;
 }) {
   const router = useRouter();
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -132,7 +140,7 @@ function CpayRegistrationPageContent({
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify(data),
+        body: JSON.stringify({ ...data, nabd }),
       });
 
       const result = (await response.json()) as ApiError & { success?: boolean };
@@ -142,6 +150,15 @@ function CpayRegistrationPageContent({
         setCaptchaResetSignal((value) => value + 1);
         setIsSubmitting(false);
         return;
+      }
+
+      if (nabd) {
+        // Fire the NABD conversion ping exactly once, best-effort — it must never
+        // block navigation or fail the flow (opaque no-cors request).
+        void fetch(NABD_THANKYOU_URL, {
+          mode: 'no-cors',
+          keepalive: true,
+        }).catch(() => {});
       }
 
       router.push('/cpayregistration/success');
@@ -387,13 +404,22 @@ function CpayRegistrationPageContent({
 function CpayRegistrationPageWithSearchParams() {
   const searchParams = useSearchParams();
   const language = normalizeFormLanguage(searchParams.get('lang'));
+  const nabd = searchParams.has('nabd');
 
-  return <CpayRegistrationPageContent key={language} language={language} />;
+  return (
+    <CpayRegistrationPageContent
+      key={language}
+      language={language}
+      nabd={nabd}
+    />
+  );
 }
 
 export default function CpayRegistrationPage() {
   return (
-    <Suspense fallback={<CpayRegistrationPageContent language="en" />}>
+    <Suspense
+      fallback={<CpayRegistrationPageContent language="en" nabd={false} />}
+    >
       <CpayRegistrationPageWithSearchParams />
     </Suspense>
   );

@@ -15,6 +15,12 @@ import registerTranslations from '@/locales/forms/register.json';
 
 type RegisterCopy = (typeof registerTranslations)['en'];
 
+// When the page is opened with a ?nabd query param it is a NABD campaign landing
+// page: the lead is tagged accordingly and a one-time conversion ping is fired to
+// this thank-you URL after a successful registration.
+const NABD_THANKYOU_URL =
+  'https://cmsprime.com/cms/landing/nabdgeneral/ar/thank-you/';
+
 interface CountryDropdownProps {
   value: string;
   onChange: (value: string) => void;
@@ -233,7 +239,13 @@ interface ApiError {
   };
 }
 
-function RegisterPageContent({ language }: { language: FormLanguage }) {
+function RegisterPageContent({
+  language,
+  nabd,
+}: {
+  language: FormLanguage;
+  nabd: boolean;
+}) {
   const router = useRouter();
   const [step, setStep] = useState(1);
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -295,6 +307,7 @@ function RegisterPageContent({ language }: { language: FormLanguage }) {
         country: data.country.toUpperCase(),
         tin: data.tin,
         lead: true,
+        ...(nabd ? { tags: ['NABD Landing page'] } : {}),
       };
 
       const response = await fetch('/api/register', {
@@ -312,6 +325,15 @@ function RegisterPageContent({ language }: { language: FormLanguage }) {
         setShowErrorPopup(true);
         setIsSubmitting(false);
         return;
+      }
+
+      if (nabd) {
+        // Fire the NABD conversion ping exactly once, best-effort — it must never
+        // block navigation or fail the flow (opaque no-cors request).
+        void fetch(NABD_THANKYOU_URL, {
+          mode: 'no-cors',
+          keepalive: true,
+        }).catch(() => {});
       }
 
       router.push('/register/success');
@@ -1006,13 +1028,16 @@ function RegisterPageContent({ language }: { language: FormLanguage }) {
 function RegisterPageWithSearchParams() {
   const searchParams = useSearchParams();
   const language = normalizeFormLanguage(searchParams.get('lang'));
+  const nabd = searchParams.has('nabd');
 
-  return <RegisterPageContent key={language} language={language} />;
+  return (
+    <RegisterPageContent key={language} language={language} nabd={nabd} />
+  );
 }
 
 export default function RegisterPage() {
   return (
-    <Suspense fallback={<RegisterPageContent language="en" />}>
+    <Suspense fallback={<RegisterPageContent language="en" nabd={false} />}>
       <RegisterPageWithSearchParams />
     </Suspense>
   );
