@@ -307,7 +307,7 @@ function RegisterPageContent({
         country: data.country.toUpperCase(),
         tin: data.tin,
         lead: true,
-        ...(nabd ? { tags: ['NABD Landing page'] } : {}),
+        ...(nabd ? { tags: ['NABD Landing page - register'] } : {}),
       };
 
       const response = await fetch('/api/register', {
