@@ -16,8 +16,9 @@ import registerTranslations from '@/locales/forms/register.json';
 type RegisterCopy = (typeof registerTranslations)['en'];
 
 // When the page is opened with a ?nabd query param it is a NABD campaign landing
-// page: the lead is tagged accordingly and a one-time conversion ping is fired to
-// this thank-you URL after a successful registration.
+// page: the lead is tagged accordingly and, after a successful registration, the
+// user is redirected to this campaign thank-you page (our local success page is
+// not shown in the NABD scenario).
 const NABD_THANKYOU_URL =
   'https://cmsprime.com/cms/landing/nabdgeneral/ar/thank-you/';
 
@@ -328,12 +329,10 @@ function RegisterPageContent({
       }
 
       if (nabd) {
-        // Fire the NABD conversion ping exactly once, best-effort — it must never
-        // block navigation or fail the flow (opaque no-cors request).
-        void fetch(NABD_THANKYOU_URL, {
-          mode: 'no-cors',
-          keepalive: true,
-        }).catch(() => {});
+        // NABD campaign: redirect to the campaign's own thank-you page instead of
+        // showing our local success page.
+        window.location.assign(NABD_THANKYOU_URL);
+        return;
       }
 
       router.push('/register/success');
