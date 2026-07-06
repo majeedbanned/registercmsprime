@@ -18,7 +18,7 @@ const cpayRegistrationSchema = z.object({
   email: z.string().trim().email('Invalid email address'),
   country: z.string().trim().length(2, 'Country is required'),
   turnstileToken: z.string().trim().optional(),
-  nabd: z.boolean().optional(),
+  nabdVariant: z.enum(['general', 'cpay']).optional(),
 });
 
 interface ApiFailure {
@@ -517,7 +517,11 @@ export async function POST(request: NextRequest) {
       email: parsedBody.data.email,
       country: parsedBody.data.country.toUpperCase(),
       tags: [
-        parsedBody.data.nabd ? 'NABD Landing page' : 'Request Cpay from website',
+        parsedBody.data.nabdVariant === 'cpay'
+          ? 'NABD Landing page - Cpay'
+          : parsedBody.data.nabdVariant === 'general'
+            ? 'NABD Landing page - General'
+            : 'Request Cpay from website',
       ],
       lead: true,
     };

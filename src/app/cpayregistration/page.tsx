@@ -16,12 +16,19 @@ import cpayRegistrationTranslations from '@/locales/forms/cpayregistration.json'
 
 const TURNSTILE_SITE_KEY = '0x4AAAAAAA0Zk0rGqldjkug7';
 
-// When the page is opened with a ?nabd query param it is a NABD campaign landing
-// page: the lead is tagged accordingly (server-side) and, after a successful
-// registration, the user is redirected to this campaign thank-you page (our local
-// success page is not shown in the NABD scenario).
-const NABD_THANKYOU_URL =
-  'https://cmsprime.com/cms/landing/nabdcpay/ar/thank-you/';
+// NABD campaign landing-page handling for /cpayregistration. Two query params are
+// recognised (arriving from two different NABD campaigns):
+//   ?nabd     → "General" variant → nabdgeneral thank-you page
+//   ?nabdcpay → "Cpay" variant    → nabdcpay thank-you page
+// On a successful registration the lead is tagged accordingly (server-side) and the
+// client is redirected to the matching thank-you page (our local success page is not
+// shown in the NABD scenario).
+const NABD_THANKYOU_URLS = {
+  general: 'https://cmsprime.com/cms/landing/nabdgeneral/ar/thank-you/',
+  cpay: 'https://cmsprime.com/cms/landing/nabdcpay/ar/thank-you/',
+} as const;
+
+type NabdVariant = keyof typeof NABD_THANKYOU_URLS;
 
 type CpayRegistrationCopy = (typeof cpayRegistrationTranslations)['en'];
 
@@ -52,10 +59,10 @@ type CpayRegistrationFormData = z.infer<
 
 function CpayRegistrationPageContent({
   language,
-  nabd,
+  nabdVariant,
 }: {
   language: FormLanguage;
-  nabd: boolean;
+  nabdVariant: NabdVariant | null;
 }) {
   const router = useRouter();
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -141,7 +148,10 @@ function CpayRegistrationPageContent({
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ ...data, nabd }),
+        body: JSON.stringify({
+          ...data,
+          ...(nabdVariant ? { nabdVariant } : {}),
+        }),
       });
 
       const result = (await response.json()) as ApiError & { success?: boolean };
@@ -153,10 +163,10 @@ function CpayRegistrationPageContent({
         return;
       }
 
-      if (nabd) {
-        // NABD campaign: redirect to the campaign's own thank-you page instead of
+      if (nabdVariant) {
+        // NABD campaign: redirect to the matching campaign thank-you page instead of
         // showing our local success page.
-        window.location.assign(NABD_THANKYOU_URL);
+        window.location.assign(NABD_THANKYOU_URLS[nabdVariant]);
         return;
       }
 
@@ -403,13 +413,18 @@ function CpayRegistrationPageContent({
 function CpayRegistrationPageWithSearchParams() {
   const searchParams = useSearchParams();
   const language = normalizeFormLanguage(searchParams.get('lang'));
-  const nabd = searchParams.has('nabd');
+  // ?nabdcpay takes precedence over ?nabd if both are somehow present.
+  const nabdVariant: NabdVariant | null = searchParams.has('nabdcpay')
+    ? 'cpay'
+    : searchParams.has('nabd')
+      ? 'general'
+      : null;
 
   return (
     <CpayRegistrationPageContent
       key={language}
       language={language}
-      nabd={nabd}
+      nabdVariant={nabdVariant}
     />
   );
 }
@@ -417,7 +432,9 @@ function CpayRegistrationPageWithSearchParams() {
 export default function CpayRegistrationPage() {
   return (
     <Suspense
-      fallback={<CpayRegistrationPageContent language="en" nabd={false} />}
+      fallback={
+        <CpayRegistrationPageContent language="en" nabdVariant={null} />
+      }
     >
       <CpayRegistrationPageWithSearchParams />
     </Suspense>
